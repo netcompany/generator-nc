@@ -4,6 +4,8 @@ var yeoman = require('yeoman-generator');
 var yosay = require('yosay'); //nice-to-have: tell the yeoman logo what to say
 var chalk = require('chalk'); //nice-to-have: colored text in the console
 
+var prompts = require('./prompts.json'); //loads all the prompts defined in the local json
+
 var NCGenerator = yeoman.generators.Base.extend({
 
 	// General setup
@@ -29,20 +31,72 @@ var NCGenerator = yeoman.generators.Base.extend({
 			chalk.yellow('You\'re using the fantastic NC-generator for scaffolding UI! omg omg omg!')
 		));
 	},
-	//TODO: Get all user inputs and configurations
+	//Get all user inputs and configurations
 	askFor: function () {
+		this.log(
+	      chalk.magenta(
+	        'Please answer the following questions to customize your install.' +
+	        '\n'
+	      )
+	    );
+
+		// ------------------ Ask the initial questions ---------------
+		var prompts = [{
+            name: 'appName',
+            message: 'What is your app\'s name ?'
+        },{
+            type: 'confirm',
+            name: 'addDemoSection',
+            message: 'Would you like to generate a demo section ?',
+            default: true
+        }];
+
 		var done = this.async();
 
-		var prompts = [{
-		  name: 'projectName',
-		  message: 'What is the name of your project?'
-		}];
-
-		this.prompt(prompts, function (props) {
+		this.prompt(initialPrompts, function (props) {
 		  this.projectName = props.projectName;
 		  this.appNameNoSpace = props.projectName.replace(/[ çãõáà]/g, '');
 
 		  done();
+		}.bind(this));
+
+
+		// --- Ask the initial questions ---
+		this.prompt([
+		{
+			name: 'appName',
+            message: 'What is your app\'s name ?'
+		},
+		{
+			name: 'dependencyStorageLocation',
+            message: 'Would you like to change the directory where /node_modules/ and /bower_components/ are stored? Default is to create the folders in the current folder. Provide a relative path like: \'/solution items/build/\' to change. Leave blank and press enter to keep the default directory.',
+            default: ""
+		},
+		{
+			type: 'confirm',
+			name: 'bootstrap',
+			message: 'Would you like to include Bootstrap?',
+			default: true
+		}, 
+		{
+			type: 'confirm',
+			name: 'compassBootstrap',
+			message: 'Would you like to use the Sass version of Bootstrap?',
+			default: true,
+			when: function (props) {
+		  		return props.bootstrap && compass;
+			}
+		}
+		], function (props) {
+			this.appName = props.appName;
+			this.appNameNoSpace = props.appName.replace(/[ çãõáà]/g, '');
+
+			this.dependencyStorageLocation = props.dependencyStorageLocation; //is an empty string if default location, else relative path.
+
+			this.bootstrap = props.bootstrap;
+			this.compassBootstrap = props.compassBootstrap;
+
+			cb();
 		}.bind(this));
 	},
 	scaffoldFolders: function(){
