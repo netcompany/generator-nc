@@ -1,24 +1,23 @@
 'use strict';
 
-angular
-  .module('app', [
-    'ngCookies',
-    'ngResource',
-    'ngSanitize',
-    'ngRoute',
-    'ui.bootstrap'
-  ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+define([
+	'angular',
+	'filters',
+	'services',
+	'directives',
+	'controllers',
+	'angularRoute',
+	'angularBootstrap',
+	], function (angular, filters, services, directives, controllers) {
+
+		// Declare app level module which depends on filters, and services
+		
+		return angular.module('myApp', [
+			'ngRoute',
+			'myApp.filters',
+			'myApp.services',
+			'myApp.directives',
+			'myApp.controllers',
+			'angularBootstrap'
+		]);
+});
