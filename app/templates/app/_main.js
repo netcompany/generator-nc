@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+  Please keep this here. More info here:
+  https://github.com/tnajdek/angular-requirejs-seed/blob/master/app/js/main.js
+  http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
+*/
+window.name = "NG_DEFER_BOOTSTRAP!";
+
 require.config({
 	paths: {
 		angular: '../bower_components/angular/angular',
@@ -21,16 +28,17 @@ require.config({
 	]
 });
 
-//http://code.angularjs.org/1.2.1/docs/guide/bootstrap#overview_deferred-bootstrap
-window.name = "NG_DEFER_BOOTSTRAP!";
 
-require( [
-	'angular',
-	'app',
-	'routes'
-], function(angular, app, routes) {
-	var $html = angular.element(document.getElementsByTagName('html')[0]);
+require(['<%=appNameNoSpace%>'], function(<%=appNameNoSpace%>) {
 
+  /*
+    Start your app here
+  */
+
+  /*
+    Keep this at the bottom of the function. More info at:
+    https://github.com/tnajdek/angular-requirejs-seed/blob/master/app/js/main.js
+  */
 	angular.element().ready(function() {
 		angular.resumeBootstrap([app['name']]);
 	});

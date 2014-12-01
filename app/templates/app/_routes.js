@@ -1,8 +1,8 @@
 'use strict';
 
-define(['angular', 'app'], function(angular, app) {
+define(['angular', '<%=appNameNoSpace%>'], function(angular, <%=appNameNoSpace%>) {
 
-	return app.config(['$routeProvider', function($routeProvider) {
+	return <%=appNameNoSpace%>.config(['$routeProvider', function($routeProvider) {
 		$routeProvider.when('/view1', {
 			templateUrl: 'app/partial1.html',
 			controller: 'MyCtrl1'

@@ -21,3 +21,8 @@ define([
 			'angularBootstrap'
 		]);
 });
+
+
+define(['angular', 'angular-route'], function(angular) {
+  var <%=appNameNoSpace%> = angular.module('<%=appNameNoSpace%>', ['ngRoute']);
+});

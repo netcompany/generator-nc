@@ -254,7 +254,8 @@ var NCGenerator = yeoman.generators.Base.extend({
 	  		this.copy('_jshintrc', 'jshintrc');
 
 
-	  		this.copy('_index.html', 'index.html');
+	  		this.template('_index.html', 'index.html');
+	  		this.template('app/_app.js', 'app/' + this.appNameNoSpace + '.js');
 	  		this.copy('app/_app.js', 'app/app.js');
 	  		this.copy('app/_controllers.js', 'app/controllers.js');
 	  		this.copy('app/_directives.js', 'app/directives.js');
