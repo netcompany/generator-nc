@@ -164,13 +164,7 @@ var NCGenerator = yeoman.generators.Base.extend({
 	  		this.template('app/_index.html', 'index.html');
 	  		this.copy('app/content/_source/js/_app.js', 'content/_source/js/app.js');
 	  		this.copy('app/content/_source/scss/_app.scss', 'content/_source/scss/app.scss');
-	  		if(this.angularjs) {
-		  		this.copy('app/content/_source/js/controllers/_todoCtrl.js', 'content/_source/js/controllers/todoCtrl.js');
-		  		this.copy('app/content/_source/js/directives/_todoEscape.js', 'content/_source/js/directives/todoEscape.js');
-		  		this.copy('app/content/_source/js/directives/_todoFocus.js', 'content/_source/js/directives/todoFocus.js');
-		  		this.copy('app/content/_source/js/services/_todoStorage.js', 'content/_source/js/services/todoStorage.js');
-		  		this.copy('app/content/_source/js/templates/_todoDemo.html', 'content/_source/js/templates/todoDemo.html');
-	  		}
+	  		this.copy('app/content/images/_favicon.ico', 'content/images/favicon.ico');
 		    this.log("Copying and customizing files " + chalk.green("Done"));
 		}
 	},

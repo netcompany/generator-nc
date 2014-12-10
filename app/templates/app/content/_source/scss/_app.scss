@@ -1,3 +1,7 @@
+<% if(bootstrap) { %> 
+@import '..\js\bower_components\bootstrap-sass-official\assets\stylesheets\_bootstrap'; 
+<% } %>
+
 body {
 	background-color: red;
 }

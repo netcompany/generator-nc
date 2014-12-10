@@ -10,7 +10,8 @@ var gulp = require('gulp'),
   concat = require('gulp-concat'),
   rename = require('gulp-rename'),
   autoprefix = require('gulp-autoprefixer'),
-  notify = require("gulp-notify");
+  notify = require("gulp-notify"),
+  minifycss = require("gulp-minify-css");
 
 /* Basic configuration of gulp */
 var config = {
@@ -18,7 +19,7 @@ var config = {
   scriptPath: './_source/js',
   bowerDir: './_source/js/bower_components',
   distScripts: './scripts',
-  distStyles: './style',
+  distStyles: './styles',
   distAssets: './assets'
 };
 
@@ -27,33 +28,41 @@ var server = {
   port: '8001'
 };
 
+
+<% if(bootstrap) { %>
 /* Moves bootstrap glyphicons to dist/assets/fonts folder */
 gulp.task('bootstrap-icons', function () {
   return gulp.src(config.bowerDir + '/bootstrap-sass-official/assets/fonts/bootstrap/**.*')
     .pipe(gulp.dest(config.distAssets + '/fonts'));
 });
+<% } %>
 
 /* Compiles sass til css (both bootstrap and your own scss files) */
 gulp.task('sass-to-css', function () {
-  return gulp.src(config.sass + "/**/*.scss")
+  return gulp.src(config.sass + '/**/*.scss')
     .pipe(plumber())
-    .pipe(sass())
+    .pipe(sass({ style: 'expanded' }))
     .pipe(autoprefix('last 1 version'))
+    .pipe(gulp.dest(config.distStyles))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(minifycss())
     .pipe(gulp.dest(config.distStyles));
 });
 
 /* Run jshint, uglify on scripts */
 gulp.task('scripts', function () {
   return gulp.src([
-      config.scriptPath + '/bower_components/*.js',
+      config.scriptPath + '/bower_components/angular/angular.min.js',
+      config.scriptPath + '/bower_components/angular-*/*.min.js',
+      config.scriptPath + '/bower_components/jquery/**/*.min.js',
+      config.scriptPath + 'app.js',
       config.scriptPath + '/controllers/*.js',
       config.scriptPath + '/directives/*.js',
       config.scriptPath + '/services/*.js',
-      config.scriptPath + '/templates/*.js',
-      config.scriptPath + 'app.js'
+      config.scriptPath + '/templates/*.js'
       ])
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
+    //.pipe(jshint())
+    //.pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('app.js'))
     .pipe(gulp.dest(config.distScripts))
     .pipe(rename({ suffix: '.min' }))
@@ -81,7 +90,7 @@ gulp.task('webserver', function () {
 });
 
 /* Run tasks */
-gulp.task('default', ['bootstrap-icons', 'sass-to-css', 'scripts']);
+gulp.task('default', [<% if(bootstrap) { %>'bootstrap-icons',<% } %> 'sass-to-css', 'scripts']);
 gulp.task('script', ['scripts']);
-gulp.task('style', ['bootstrap-icons', 'sass-to-css']);
+gulp.task('style', [<% if(bootstrap) { %>'bootstrap-icons',<% } %> 'sass-to-css']);
 //gulp.task('publish', ['publish']);
