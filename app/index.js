@@ -37,36 +37,11 @@ var NCGenerator = yeoman.generators.Base.extend({
 		this.log(chalk.bold('---- Please answer the following questions to customize your install ----'));
 
 		// --- Ask the hard-hitting questions, good-cop/bad-cop style! ---
-		/*var doneInitial = this.async();
+		var doneInitial = this.async();
 		this.prompt([
 		{
 			name: 'appName',
             message: 'What is your project\'s name ? \n'
-		},
-		{
-			name: 'dependencyStorageLocation',
-            message: 'Would you like to change the directory where /node_modules/ and /bower_components/ are stored? Default is to create the folders in the current folder. Provide a relative path like: \'/solution items/build/\' to change. Leave blank and press enter to keep the default directory. \n',
-            default: ""
-		},
-		{
-			name: 'scriptStorageLocation',
-            message: 'By default, generator-nc creates a \'scripts\' folder at the root level and wires gulp to processes the javascript files in this folder. If you already have a scripts folder in a different location, please provide the relative path to this folder (leave blank and enter to keep default). \n',
-            default: ""
-		},
-		{
-			name: 'distScriptStorageLocation',
-            message: 'By default, Gulp places distribution scripts in a \'/dist/scripts\' folder at the root level, would you like to change this? Provide a relative path to change the location (leave blank and enter to keep default). \n',
-            default: ""
-		},
-		{
-			name: 'assetsStorageLocation',
-            message: 'By default, generator-nc creates an \'assets\' folder at the root level and wires gulp to processes the font, image and scss files in this folder. If you already have an existing \'assets\' folder in a different location, please provide the relative path to this folder (leave blank and enter to keep default). \n',
-            default: ""
-		},
-		{
-			name: 'distAssetsStorageLocation',
-            message: 'By default, Gulp places distribution assets (imgs, css, etc.) in a \'/dist/assets\' folder at the root level, would you like to change this? Provide a relative path to change the location (leave blank and enter to keep default). \n',
-            default: ""
 		},
 		{
 			name: 'bootstrap',
@@ -79,80 +54,22 @@ var NCGenerator = yeoman.generators.Base.extend({
 			type: 'confirm',
 			message: 'Would you like to include AngularJS? \n',
 			default: true
-		}, 
-		{
-			name: 'angularBootstrap',
-			type: 'confirm',
-			message: 'Would you like to include Angular-Bootstrap? \n',
-			when: function (props) {
-		  		return props.angularjs && props.bootstrap;
-			},
-			default: true
-		},
-		{
-			name: 'extensionsBootstrap',
-			type: 'checkbox',
-			message: 'Include Bootstrap add-ons? \n',
-			when: function (props) {
-		  		return props.bootstrap;
-			},
-			"choices": [
-			{
-				"value": "bootstrap-datepicker",
-				"name": "Bootstrap datepicker",
-				checked: false
-			},
-			{
-				"value": "something",
-				"name": "Super-awesome bootstrap extension",
-				checked: false
-			}]
-		}, 
-		{
-			name: 'extensionsAngular',
-			type: 'checkbox',
-			message: 'Include AngularJS add-ons?',
-			when: function (props) {
-		  		return props.angularjs;
-			},
-			"choices": [
-			{
-				"value": "ng-awesome",
-				"name": "ng-awesome",
-				checked: false
-			},
-			{
-				"value": "ng-something",
-				"name": "Super-awesome angular stuff",
-				checked: false
-			}]
 		}
 		], function (props) {
 			this.appName = props.appName;
 			this.appNameNoSpace = props.appName.replace(/[ çãõáà]/g, '');
 
-			this.dependencyStorageLocation = props.dependencyStorageLocation; //is an empty string if default location, else relative path.
-
-			//dev-scripts and dist-scripts location
-			this.scriptStorageLocation = props.scriptStorageLocation; //is an empty string if default location, else relative path.
-			this.distScriptStorageLocation = props.distScriptStorageLocation; //is an empty string if default location, else relative path.
-
-			//dev-assets and dist-assets location
-			this.assetsStorageLocation = props.assetsStorageLocation;
-			this.distAssetsStorageLocation = props.distAssetsStorageLocation;
-
 			//bootstrap
 			this.bootstrap = props.bootstrap;
-			this.extensionsBootstrap = props.extensionsBootstrap;
 
 			//angular
 			this.angularjs = props.angularjs;
-			this.extensionsAngular = props.extensionsAngular;
 
 			doneInitial();
-		}.bind(this));*/
+		}.bind(this));
 
 		//TEST VALUES: TODO DELETE:
+		/*
 		this.appName= "gg";
 		this.appNameNoSpace=  "gg";
 		this.dependencyStorageLocation = "";
@@ -169,6 +86,7 @@ var NCGenerator = yeoman.generators.Base.extend({
 		this.extensionsAngular = [
 		    "ng-awesome"
 		];
+		*/
 	},
 	detectVisualStudioProject: function(){
 		// Detect if it's a visual studio project and ask if gulp should be added as pre-build event
@@ -222,65 +140,37 @@ var NCGenerator = yeoman.generators.Base.extend({
 	scaffoldFolders: function(){
 		if(this.doInstall){
 			this.log("Scaffolding folders");
-			this.mkdir("app");
-			this.mkdir("app/controllers");
-			this.mkdir("app/style");
-			/*this.mkdir("app/shared");
-			this.mkdir("app/shared/sidebar");
-			this.mkdir("app/components");
-			this.mkdir("app/components/home");
-			this.mkdir("app/components/dashboard");
-			this.mkdir("assets");
-			this.mkdir("assets/style");
-			this.mkdir("assets/img");
-			this.mkdir("assets/fonts");
-			this.mkdir("test");*/
-
-
-
+			this.mkdir("content");
+			this.mkdir("content/_source");
+			this.mkdir("content/images");
+			this.mkdir("content/_source/img");
+			this.mkdir("content/_source/js");
+			this.mkdir("content/_source/scss");
 			this.log("Scaffolding folders " + chalk.green("Done"));
 		}
 	},
 	copyMainFiles: function(){
 		if(this.doInstall){
 			this.log("Copying and customizing files");
-			this.copy("_gulpfile.js", "gulpfile.js");
+
+			//copy build files
+			this.copy("_gulpfile.js", "content/gulpfile.js");
 		    this.copy("_package.json", "package.json");
-		    //this.copy("assets/style/_main.scss", "assets/style/main.scss");
-		    //this.copy("app/_app.js", "app/app.js");
-
 		    this.copy('_bowerrc', '.bowerrc');
-	  		this.copy('_bower.json', 'bower.json');
-	  		this.copy('_jshintrc', 'jshintrc');
+	  		this.template('_bower.json', 'bower.json');
+	  		this.copy('_jshintrc', 'content/jshintrc');
 
-
-	  		this.template('_index.html', 'index.html');
-	  		this.template('app/_app.js', 'app/' + this.appNameNoSpace + '.js');
-	  		this.copy('app/_app.js', 'app/app.js');
-	  		this.copy('app/_controllers.js', 'app/controllers.js');
-	  		this.copy('app/_directives.js', 'app/directives.js');
-	  		this.copy('app/_filters.js', 'app/filters.js');
-	  		this.copy('app/_main.js', 'app/main.js');
-	  		this.copy('app/_partial1.html', 'app/partial1.html');
-	  		this.copy('app/_partial2.html', 'app/partial2.html');
-	  		this.copy('app/_routes.js', 'app/routes.js');
-	  		this.copy('app/_services.js', 'app/services.js');
-	  		this.copy('app/controllers/_myctrl2.js', 'app/controllers/myctrl2.js');
-	  		this.copy('app/style/_test.scss', 'app/style/test.scss');
-
-
-			/*this.copy('_gruntfile.js', 'Gruntfile.js');
-			this.copy('_package.json', 'package.json');
-			this.copy('_bower.json', 'bower.json');
-			this.copy('_bowerrc', '.bowerrc');
-			this.copy('_index.html', 'app/index.html');*/
-		 
-		 /*   var context = { 
-		        site_name: this.appName 
-		    };
-		 
-		    this.template("_header.html", "app/header.html", context);*/
-
+	  		//copy templates
+	  		this.template('app/_index.html', 'index.html');
+	  		this.copy('app/content/_source/js/_app.js', 'content/_source/js/app.js');
+	  		this.copy('app/content/_source/scss/_app.scss', 'content/_source/scss/app.scss');
+	  		if(this.angularjs) {
+		  		this.copy('app/content/_source/js/controllers/_todoCtrl.js', 'content/_source/js/controllers/todoCtrl.js');
+		  		this.copy('app/content/_source/js/directives/_todoEscape.js', 'content/_source/js/directives/todoEscape.js');
+		  		this.copy('app/content/_source/js/directives/_todoFocus.js', 'content/_source/js/directives/todoFocus.js');
+		  		this.copy('app/content/_source/js/services/_todoStorage.js', 'content/_source/js/services/todoStorage.js');
+		  		this.copy('app/content/_source/js/templates/_todoDemo.html', 'content/_source/js/templates/todoDemo.html');
+	  		}
 		    this.log("Copying and customizing files " + chalk.green("Done"));
 		}
 	},

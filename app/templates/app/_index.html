@@ -1,0 +1,33 @@
+<!doctype html> 
+<% if (angularjs) { %> 
+<html class="no-js" ng-app="<%= appName %>">
+<% } else { %>
+<html class="no-js">
+<% } %>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title><%= appName %></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="shortcut icon" href="content/images/favicon.ico" />
+        <!--[if lt IE 9]>
+            <link href="content/styles/ie.min.css">
+        <![endif]-->
+		<link rel="stylesheet" href="content/styles/app.min.css" />
+	</head>
+	<body>
+		<% if (angularjs) { %> 
+			<ng-view />
+			Angular stuff
+		<% } else { %>
+			Hallo World!!!
+		<% } %>
+		<script src="content/scripts/app.js"></script>
+		<!--<script src="content/scripts/app.min.js"></script>-->
+        <!--[if lt IE 9]>
+            <script src="content/scripts/ie.js"></script>
+			<!--<script src="content/scripts/ie.min.js"></script>-->
+        <![endif]-->
+	</body>
+</html>

@@ -14,12 +14,12 @@ var gulp = require('gulp'),
 
 /* Basic configuration of gulp */
 var config = {
-  sass: './app/style', /* Path to your projects scss files */
-  scriptPath: './app',
-  bowerDir: './bower_components',
-  distScripts: './dist/scripts',
-  distStyles: './dist/style',
-  distAssets: './dist/assets'
+  sass: './_source/scss', /* Path to your projects scss files */
+  scriptPath: './_source/js',
+  bowerDir: './_source/js/bower_components',
+  distScripts: './scripts',
+  distStyles: './style',
+  distAssets: './assets'
 };
 
 var server = {
@@ -44,7 +44,14 @@ gulp.task('sass-to-css', function () {
 
 /* Run jshint, uglify on scripts */
 gulp.task('scripts', function () {
-  return gulp.src(config.scriptPath + '/**/*.js')
+  return gulp.src([
+      config.scriptPath + '/bower_components/*.js',
+      config.scriptPath + '/controllers/*.js',
+      config.scriptPath + '/directives/*.js',
+      config.scriptPath + '/services/*.js',
+      config.scriptPath + '/templates/*.js',
+      config.scriptPath + 'app.js'
+      ])
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(concat('app.js'))
