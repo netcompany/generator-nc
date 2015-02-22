@@ -88,7 +88,7 @@ var NCGenerator = yeoman.generators.Base.extend({
 		];
 		*/
 	},
-	detectVisualStudioProject: function(){
+	/*detectVisualStudioProject: function(){
 		// Detect if it's a visual studio project and ask if gulp should be added as pre-build event
 		var that = this;
 		readdirp({ root: '.', fileFilter: [ '*.csproj'] })
@@ -112,7 +112,7 @@ var NCGenerator = yeoman.generators.Base.extend({
 	            done();
 	        }.bind(this));
 		});
-	},
+	},*/
 	// show the user whats going to change (files, folders etc.), then ask to proceed or not.
 	showPendingChanges: function(){
 		this.log(chalk.bold("---- Generator-NC will execute the following changes ---- "));
